@@ -32,8 +32,12 @@ function getSupabaseAdmin(): SupabaseClient {
 
 // Proxy so existing call sites (`supabaseAdmin.auth...`, `supabaseAdmin.from...`)
 // keep working unchanged while the real client is only built on first access.
+// Functions are bound to the real client (not the proxy) so supabase-js's
+// internal `this` references keep working.
 export const supabaseAdmin = new Proxy({} as SupabaseClient, {
-  get(_target, prop, receiver) {
-    return Reflect.get(getSupabaseAdmin(), prop, receiver);
+  get(_target, prop) {
+    const client = getSupabaseAdmin();
+    const value = Reflect.get(client, prop);
+    return typeof value === "function" ? value.bind(client) : value;
   },
 });
