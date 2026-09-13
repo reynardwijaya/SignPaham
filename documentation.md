@@ -28,7 +28,7 @@ SignPaham/
 ├── src/
 │   ├── app/                     # Routing Next.js App Router (tiap folder = 1 URL)
 │   │   ├── page.tsx             # Halaman Beranda ("/")
-│   │   ├── layout.tsx           # Root layout: font, AuthProvider, ToastProvider, OfflineOverlay
+│   │   ├── layout.tsx           # Root layout: font, AuthProvider, ToastProvider, AuthModalProvider, OfflineOverlay
 │   │   ├── globals.css          # Design tokens Tailwind v4 (@theme), style dasar
 │   │   ├── error.tsx            # Error boundary bawaan Next.js (halaman error 500-ish)
 │   │   ├── global-error.tsx     # Error boundary paling luar (self-contained, tanpa dependency layout)
@@ -43,19 +43,21 @@ SignPaham/
 │   ├── components/
 │   │   ├── layout/               # Navbar & Footer — dipakai di semua halaman
 │   │   ├── auth/                 # AuthPanel — panel slide-in Login/Register/Lupa Password
-│   │   ├── alfabet/               # AlfabetGrid (grid huruf), HurufModal (detail huruf + navigasi)
+│   │   ├── alfabet/               # AlfabetGrid, HurufModal (detail + navigasi), CelebrationModal (confetti saat 26/26 selesai)
 │   │   ├── latihan/               # KesulitanSelector, KecepatanSelector, QuizPlayer, HistoryModal
 │   │   └── ui/                    # Komponen generik: Button, PillCard, ErrorState, ConfirmModal,
 │   │                               #   OfflineOverlay, HurufImage
 │   │
 │   ├── contexts/                 # React Context — state global via Provider
 │   │   ├── AuthContext.tsx        # Sesi user Supabase: login, register, logout, reset password
+│   │   ├── AuthModalContext.tsx   # Global trigger untuk panel Auth (openAuth) — bisa dipanggil dari
+│   │   │                          #   halaman manapun (mis. tombol "Daftar" di Latihan), bukan cuma Navbar
 │   │   └── ToastContext.tsx       # Notifikasi toast (showToast) yang bisa dipanggil dari mana saja
 │   │
 │   ├── hooks/                    # Custom hooks
 │   │   ├── useQuizEngine.ts       # Logika permainan tebak kata (state mesin kuis)
 │   │   ├── useQuizHistory.ts      # Riwayat jawaban — ke Supabase kalau login, localStorage kalau tidak
-│   │   └── useViewedHuruf.ts      # Progress huruf yang sudah dibuka — sama, hybrid Supabase/localStorage
+│   │   └── useViewedHuruf.ts      # Progress huruf yang sudah dibuka (hybrid Supabase/localStorage) + resetProgress()
 │   │
 │   ├── data/                     # Data statis (bukan dari database)
 │   │   ├── alfabet.ts             # 26 huruf + deskripsi cara membentuk isyaratnya
@@ -66,7 +68,10 @@ SignPaham/
 │       └── supabaseAdmin.ts       # Klien Supabase sisi server (pakai service_role key — JANGAN pernah
 │                                   #   di-import dari komponen "use client")
 │
-├── public/                       # Aset statis: logo.png, hero-bg.jpg, mascot.png, road-path.png, manifest.json
+├── public/
+│   └── isyarat/                   # Foto asli 26 huruf BISINDO (a.jpg–z.jpg, rasio 3:4), dipakai di
+│                                   #   AlfabetGrid, HurufModal, dan QuizPlayer lewat HurufImage
+│                                   # + logo.png, hero-bg.jpg, mascot.png, road-path.png, manifest.json
 ├── supabase/
 │   └── schema.sql                # Skema database lengkap — dijalankan manual di Supabase SQL Editor
 ├── .env.local                    # Kredensial Supabase (TIDAK di-commit, ada di .gitignore)
@@ -189,8 +194,8 @@ npm run lint    # cek linting
 
 ## 6. Alur Fitur Utama (Ringkas)
 
-- **Auth** — Panel slide-in dari kanan (`AuthPanel`), bukan halaman terpisah. Mode: Masuk, Daftar, Lupa Kata Sandi (reset langsung tanpa email — lihat catatan keamanan di `route.ts`).
-- **Alfabet** — Klik huruf di grid → modal detail muncul dengan navigasi prev/next + keyboard arrow. Progress otomatis tersimpan (Supabase/localStorage).
-- **Latihan** — Pilih tingkat kesulitan & kecepatan → mesin kuis (`useQuizEngine`) menampilkan huruf demi huruf → user tebak kata → hasil masuk ke Riwayat (`HistoryModal`, cuma muncul kalau sudah login).
-- **Notifikasi** — Toast (`useToast`) untuk feedback aksi (berhasil daftar/masuk/keluar), `ConfirmModal` untuk aksi yang perlu konfirmasi (keluar akun).
+- **Auth** — Panel slide-in dari kanan (`AuthPanel`), bukan halaman terpisah. Mode: Masuk, Daftar, Lupa Kata Sandi (reset langsung tanpa email — lihat catatan keamanan di `route.ts`). Panel ini dikontrol lewat `AuthModalContext`, jadi tombol "Daftar"/"Masuk" di halaman manapun (Navbar, CTA tamu di Latihan, dll) bisa memicunya tanpa prop-drilling.
+- **Alfabet** — Klik huruf di grid (foto asli, bukan placeholder) → modal detail muncul dengan foto, deskripsi, navigasi prev/next + keyboard arrow, dan tombol "Coba di Latihan". Progress otomatis tersimpan (Supabase/localStorage); saat 26/26 huruf selesai, `CelebrationModal` (confetti) muncul sekali. Progress bisa direset lewat tombol di sebelah progress bar (dengan `ConfirmModal`).
+- **Latihan** — Pilih tingkat kesulitan & kecepatan → mesin kuis (`useQuizEngine`) menampilkan huruf demi huruf → user tebak kata → hasil masuk ke Riwayat (`HistoryModal`, cuma muncul kalau sudah login). User tamu (belum login) melihat banner ajakan daftar di atas form setup.
+- **Notifikasi** — Toast (`useToast`) untuk feedback aksi (berhasil daftar/masuk/keluar/reset progres), `ConfirmModal` untuk aksi yang perlu konfirmasi (keluar akun, reset progres).
 - **Error handling** — `ErrorState` (komponen reusable) dipakai di halaman 404, error boundary, dan "segera hadir"; `OfflineOverlay` otomatis muncul saat koneksi internet putus.
