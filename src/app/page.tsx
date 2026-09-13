@@ -43,13 +43,20 @@ export default function Home() {
           {/* Hero Section with Background Photo + Wash Overlay */}
           <section
             className="relative w-full pt-20 flex items-end justify-center px-6 sm:px-10 lg:px-16 overflow-hidden"
-            style={{
-              backgroundImage: "url(/hero-bg.jpg)",
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              minHeight: "100vh",
-            }}
+            style={{ minHeight: "100vh" }}
           >
+            {/* Background photo — isolated layer so the slight blur never touches the text */}
+            <div
+              className="absolute inset-0"
+              style={{
+                backgroundImage: "url(/hero-bg.jpg)",
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                filter: "blur(3px)",
+                transform: "scale(1.05)",
+              }}
+            ></div>
+
             {/* Gradient scrim: photo reads clearly up top, text sits on solid ground at the bottom */}
             <div
               className="absolute inset-0"

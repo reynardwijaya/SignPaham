@@ -13,9 +13,12 @@ import { Lightbulb, History as HistoryIcon } from "lucide-react";
 import { useQuizHistory } from "@/hooks/useQuizHistory";
 import HistoryModal from "@/components/latihan/HistoryModal";
 import { useAuth } from "@/contexts/AuthContext";
+import { useAuthModal } from "@/contexts/AuthModalContext";
+import { UserPlus } from "lucide-react";
 
 export default function LatihanPage() {
   const { user } = useAuth();
+  const { openAuth } = useAuthModal();
   const [mode, setMode] = useState<"setup" | "playing">("setup");
   const [kesulitan, setKesulitan] = useState<Kesulitan | null>(null);
   const [kecepatan, setKecepatan] = useState<"lambat" | "cepat">("lambat");
@@ -91,6 +94,39 @@ export default function LatihanPage() {
               </motion.button>
             )}
           </motion.div>
+
+          {/* Save-progress CTA — guests only */}
+          {!user && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.15 }}
+              className="relative mb-4 rounded-2xl overflow-hidden bg-gradient-to-br from-espresso to-[#2a1810] px-5 py-4 sm:px-6 sm:py-5 shadow-sm"
+            >
+              <div className="absolute -top-8 -right-8 w-28 h-28 rounded-full bg-marigold/20 blur-2xl pointer-events-none" />
+              <div className="relative flex items-center justify-between gap-4 flex-wrap sm:flex-nowrap">
+                <div className="flex items-center gap-3">
+                  <span className="w-9 h-9 rounded-full bg-marigold/20 flex items-center justify-center flex-shrink-0">
+                    <UserPlus className="w-4 h-4 text-marigold" />
+                  </span>
+                  <div>
+                    <p className="font-display font-semibold text-sm sm:text-base text-cream-soft">
+                      Pantau Perkembangan Belajarmu
+                    </p>
+                    <p className="text-xs sm:text-sm text-cream-soft/60">
+                      Buat akun gratis untuk menyimpan skor dan riwayat latihan secara permanen.
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => openAuth("register")}
+                  className="px-5 py-2 rounded-full bg-marigold text-espresso text-sm font-semibold hover:opacity-90 active:scale-[0.97] transition-all duration-150 flex-shrink-0 whitespace-nowrap"
+                >
+                  Daftar Sekarang
+                </button>
+              </div>
+            </motion.div>
+          )}
 
           {/* Setup State */}
           <motion.div
