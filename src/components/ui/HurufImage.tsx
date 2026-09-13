@@ -11,10 +11,12 @@ interface HurufImageProps {
   priority?: boolean;
 }
 
+// Source photos are native 3:4 portrait (960x1280). Every container below
+// matches that ratio exactly so object-cover never has to crop anything.
 const sizeMap = {
-  sm: { w: 100, h: 100 },
-  md: { w: 200, h: 200 },
-  lg: { w: 300, h: 300 },
+  sm: "w-24 sm:w-28",
+  md: "w-40 sm:w-48",
+  lg: "w-56 sm:w-64",
 };
 
 export default function HurufImage({
@@ -25,13 +27,12 @@ export default function HurufImage({
   priority = false,
 }: HurufImageProps) {
   const [hasError, setHasError] = useState(!src);
-  const { w, h } = sizeMap[size];
+  const widthClass = sizeMap[size];
 
   if (hasError || !src) {
     return (
       <div
-        className="bg-espresso text-text-on-dark rounded-lg flex items-center justify-center font-display font-bold"
-        style={{ width: w, height: h, fontSize: w / 2 }}
+        className={`relative aspect-[3/4] ${widthClass} bg-espresso text-text-on-dark rounded-2xl flex items-center justify-center font-display font-bold text-5xl mx-auto`}
       >
         {huruf}
       </div>
@@ -39,12 +40,15 @@ export default function HurufImage({
   }
 
   return (
-    <div style={{ position: "relative", width: w, height: h }}>
+    <div
+      className={`relative aspect-[3/4] ${widthClass} rounded-2xl overflow-hidden shadow-md mx-auto`}
+    >
       <Image
         src={src}
         alt={alt}
         fill
-        className="object-cover rounded-lg"
+        sizes="(max-width: 640px) 200px, 260px"
+        className="object-cover"
         priority={priority}
         onError={() => setHasError(true)}
       />

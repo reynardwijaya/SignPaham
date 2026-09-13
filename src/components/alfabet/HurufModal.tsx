@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import { X, ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
 import { alfabetData } from "@/data/alfabet";
+import HurufImage from "@/components/ui/HurufImage";
 
 interface HurufModalProps {
   huruf: string | null;
@@ -11,11 +13,8 @@ interface HurufModalProps {
   onNavigate: (huruf: string) => void;
 }
 
-const gradients = [
-  "from-[#5a3b26] to-[#2a1810]",
-  "from-[#f0a55f] to-[#cf7d33]",
-  "from-[#8a2b28] to-[#4a0f0d]",
-];
+const accents = ["bg-espresso", "bg-marigold", "bg-maroon"];
+const accentText = ["text-cream-soft", "text-espresso", "text-cream-soft"];
 
 export default function HurufModal({ huruf, onClose, onNavigate }: HurufModalProps) {
   const currentIdx = huruf ? alfabetData.findIndex((h) => h.huruf === huruf) : -1;
@@ -53,7 +52,8 @@ export default function HurufModal({ huruf, onClose, onNavigate }: HurufModalPro
 
   if (!huruf || !currentData) return null;
 
-  const gradient = gradients[currentIdx % gradients.length];
+  const accent = accents[currentIdx % accents.length];
+  const accentTextColor = accentText[currentIdx % accentText.length];
 
   return (
     <AnimatePresence>
@@ -120,12 +120,18 @@ export default function HurufModal({ huruf, onClose, onNavigate }: HurufModalPro
                   transition={{ duration: 0.25, ease: "easeOut" }}
                   className="text-center"
                 >
-                  {/* Gradient tile */}
-                  <div
-                    className={`relative mx-auto mb-4 w-44 h-44 sm:w-48 sm:h-48 rounded-3xl bg-gradient-to-br ${gradient} shadow-lg flex items-center justify-center overflow-hidden`}
-                  >
-                    <span className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/25 to-transparent pointer-events-none" />
-                    <span className="font-display font-bold text-7xl text-cream-soft">
+                  {/* Photo */}
+                  <div className="relative w-fit mx-auto mb-4">
+                    <HurufImage
+                      huruf={currentData.huruf}
+                      src={currentData.gambar}
+                      alt={`Isyarat huruf ${currentData.huruf}`}
+                      size="lg"
+                      priority
+                    />
+                    <span
+                      className={`absolute bottom-2 left-2 w-9 h-9 rounded-full flex items-center justify-center font-display font-bold text-lg shadow-md ${accent} ${accentTextColor}`}
+                    >
                       {currentData.huruf}
                     </span>
                   </div>
@@ -135,9 +141,18 @@ export default function HurufModal({ huruf, onClose, onNavigate }: HurufModalPro
                   </p>
 
                   {/* Description */}
-                  <p className="text-text-muted text-sm sm:text-base leading-relaxed">
+                  <p className="text-text-muted text-sm sm:text-base leading-relaxed mb-5">
                     {currentData.deskripsi}
                   </p>
+
+                  <Link
+                    href="/latihan"
+                    onClick={onClose}
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-marigold/15 text-marigold text-xs sm:text-sm font-semibold hover:bg-marigold/25 transition-colors"
+                  >
+                    <Sparkles size={14} />
+                    Coba di Latihan
+                  </Link>
                 </motion.div>
               </AnimatePresence>
             </div>

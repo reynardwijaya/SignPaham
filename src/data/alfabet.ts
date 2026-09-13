@@ -8,156 +8,152 @@ export const alfabetData: HurufBisindo[] = [
   {
     huruf: "A",
     gambar: "/isyarat/a.jpg",
-    deskripsi: "Buat kepalan tangan dengan ibu jari menyilang di depan telapak tangan.",
+    deskripsi: "Ujung telunjuk dan ibu jari saling bertemu, membentuk segitiga kecil.",
   },
   {
     huruf: "B",
     gambar: "/isyarat/b.jpg",
     deskripsi:
-      "Tangan terbuka lurus dengan semua jari menempel dan ibu jari menyamping.",
+      "Telunjuk kiri berdiri tegak, lalu tiga jari tangan kanan menyentuhnya dari samping.",
   },
   {
     huruf: "C",
     gambar: "/isyarat/c.jpg",
     deskripsi:
-      "Bentuk tangan seperti huruf C dengan jari-jari sedikit membuka.",
+      "Lengkungkan tangan seolah sedang menggenggam gelas, membentuk huruf C.",
   },
   {
     huruf: "D",
     gambar: "/isyarat/d.jpg",
     deskripsi:
-      "Jari telunjuk lurus ke atas, jari lainnya tertekuk di telapak tangan.",
+      "Telunjuk kiri tegak lurus, jari tangan kanan ditekuk melingkarinya membentuk huruf D.",
   },
   {
     huruf: "E",
     gambar: "/isyarat/e.jpg",
     deskripsi:
-      "Kelima jari dalam posisi tertekuk dengan telapak menghadap ke dalam.",
+      "Angkat tiga jari kanan — telunjuk, tengah, dan manis — lalu arahkan ke sisi kiri.",
   },
   {
     huruf: "F",
     gambar: "/isyarat/f.jpg",
     deskripsi:
-      "Ibu jari dan jari telunjuk membentuk lingkaran, jari lain lurus ke atas.",
+      "Telunjuk dan jari tengah kanan mengarah ke kiri, telunjuk kiri menempel di pangkalnya membentuk huruf F.",
   },
   {
     huruf: "G",
     gambar: "/isyarat/g.jpg",
     deskripsi:
-      "Jari telunjuk dan jari tengah lurus membentuk V, jari lain tertekuk.",
+      "Kedua tangan mengepal, kepalan kanan mengetuk bagian atas kepalan kiri.",
   },
   {
     huruf: "H",
     gambar: "/isyarat/h.jpg",
     deskripsi:
-      "Jari telunjuk dan jari tengah lurus membentuk V dengan telapak menghadap ke depan.",
+      "Telunjuk kiri dan kanan berdiri sejajar, jari tengah kanan menyentuh telunjuk kiri.",
   },
   {
     huruf: "I",
     gambar: "/isyarat/i.jpg",
     deskripsi:
-      "Jari kelingking lurus ke atas dengan jari lain tertekuk di telapak.",
+      "Hanya jari kelingking yang berdiri tegak, jari-jari lain ditekuk ke dalam.",
   },
   {
     huruf: "J",
     gambar: "/isyarat/j.jpg",
     deskripsi:
-      "Jari kelingking lurus ke atas kemudian melengkung ke depan seperti huruf J.",
+      "Dari posisi huruf I, gerakkan tangan melengkung ke bawah mengikuti alur huruf J.",
   },
   {
     huruf: "K",
     gambar: "/isyarat/k.jpg",
     deskripsi:
-      "Jari telunjuk dan jari tengah membentuk V, jari lain lurus ke samping.",
+      "Telunjuk kiri tegak, sendi telunjuk kanan menempel padanya membentuk huruf K.",
   },
   {
     huruf: "L",
     gambar: "/isyarat/l.jpg",
     deskripsi:
-      "Jari telunjuk lurus ke atas, jari tengah lurus ke samping, jari lain tertekuk.",
+      "Telunjuk berdiri tegak dan ibu jari terentang mendatar, membentuk sudut huruf L.",
   },
   {
     huruf: "M",
     gambar: "/isyarat/m.jpg",
     deskripsi:
-      "Tiga jari (tengah, manis, kelingking) tertekuk di depan telapak tangan.",
+      "Letakkan tiga jari kanan — telunjuk, tengah, dan manis — di atas telapak tangan kiri.",
   },
   {
     huruf: "N",
     gambar: "/isyarat/n.jpg",
     deskripsi:
-      "Dua jari (manis, kelingking) tertekuk di depan telapak tangan.",
+      "Letakkan dua jari kanan — telunjuk dan tengah — di atas telapak tangan kiri.",
   },
   {
     huruf: "O",
     gambar: "/isyarat/o.jpg",
     deskripsi:
-      "Kelima jari membentuk lingkaran sempurna seperti huruf O.",
+      "Lengkungkan kelima jari tangan kiri hingga membentuk lingkaran seperti huruf O.",
   },
   {
     huruf: "P",
     gambar: "/isyarat/p.jpg",
     deskripsi:
-      "Jari telunjuk dan jari tengah lurus membentuk V dengan telapak menghadap ke bawah.",
+      "Telunjuk kiri tegak, ujung telunjuk kanan menyentuhnya, ibu jari kanan menempel di sendi telunjuk kiri.",
   },
   {
     huruf: "Q",
     gambar: "/isyarat/q.jpg",
     deskripsi:
-      "Jari telunjuk dan jari tengah membentuk V yang melengkung seperti huruf Q.",
+      "Bentuk lingkaran huruf O dengan jari kiri, lalu letakkan telunjuk kanan di atas ibu jari kiri.",
   },
   {
     huruf: "R",
     gambar: "/isyarat/r.jpg",
-    deskripsi:
-      "Jari telunjuk dan jari tengah dalam posisi menyilang membentuk X.",
+    deskripsi: "Jentikkan jari layaknya gerakan snap.",
   },
   {
     huruf: "S",
     gambar: "/isyarat/s.jpg",
     deskripsi:
-      "Kepalan tangan dengan ibu jari lurus ke samping di depan telapak.",
+      "Bentuk huruf S dari kedua telunjuk dan ibu jari, dengan tangan kiri berada di atas.",
   },
   {
     huruf: "T",
     gambar: "/isyarat/t.jpg",
     deskripsi:
-      "Ibu jari di antara jari telunjuk dan jari tengah dalam posisi tertekuk.",
+      "Bentuk huruf T dari kedua telunjuk, posisikan telunjuk kiri di atas telunjuk kanan.",
   },
   {
     huruf: "U",
     gambar: "/isyarat/u.jpg",
     deskripsi:
-      "Jari telunjuk dan jari tengah lurus membentuk U dengan telapak menghadap ke depan.",
+      "Bentuk tangan seolah sedang menggenggam gelas, menyerupai huruf U.",
   },
   {
     huruf: "V",
     gambar: "/isyarat/v.jpg",
-    deskripsi:
-      "Jari telunjuk dan jari tengah lurus membentuk V dengan telapak menghadap ke depan.",
+    deskripsi: "Regangkan telunjuk dan jari tengah membentuk huruf V.",
   },
   {
     huruf: "W",
     gambar: "/isyarat/w.jpg",
     deskripsi:
-      "Jari telunjuk, jari tengah, dan jari manis lurus membentuk W.",
+      "Kedua telunjuk dan ibu jari berdiri tegak dengan ujung ibu jari saling bersentuhan.",
   },
   {
     huruf: "X",
     gambar: "/isyarat/x.jpg",
-    deskripsi:
-      "Jari telunjuk tertekuk dan menonjol ke depan seperti huruf X.",
+    deskripsi: "Silangkan kedua telunjuk hingga membentuk huruf X.",
   },
   {
     huruf: "Y",
     gambar: "/isyarat/y.jpg",
     deskripsi:
-      "Jari kelingking dan ibu jari lurus ke depan, jari lain tertekuk.",
+      "Telunjuk dan ibu jari kiri berdiri tegak, telunjuk kanan diletakkan di telapak tangan kiri.",
   },
   {
     huruf: "Z",
     gambar: "/isyarat/z.jpg",
-    deskripsi:
-      "Jari telunjuk lurus membentuk garis seperti huruf Z di udara.",
+    deskripsi: "Tekuk tangan kanan di dekat bahu mengikuti alur huruf Z.",
   },
 ];
