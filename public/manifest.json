@@ -1,0 +1,73 @@
+{
+  "name": "SignPaham - Belajar BISINDO Interaktif",
+  "short_name": "SignPaham",
+  "description": "Platform edukasi interaktif untuk mempelajari Bahasa Isyarat Indonesia (BISINDO)",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#F6D9B4",
+  "theme_color": "#3A2414",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "32x32",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshot-1.png",
+      "sizes": "540x720",
+      "type": "image/png",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/screenshot-2.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+  ],
+  "categories": ["education"],
+  "shortcuts": [
+    {
+      "name": "Pelajari Alfabet",
+      "short_name": "Alfabet",
+      "description": "Pelajari 26 huruf BISINDO",
+      "url": "/alfabet",
+      "icons": [{ "src": "/icon-alfabet.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Mulai Latihan",
+      "short_name": "Latihan",
+      "description": "Mulai bermain quiz BISINDO",
+      "url": "/latihan",
+      "icons": [{ "src": "/icon-latihan.png", "sizes": "192x192" }]
+    }
+  ]
+}
