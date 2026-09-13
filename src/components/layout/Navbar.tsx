@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { LogOut, Menu, X } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/contexts/ToastContext";
-import AuthPanel, { AuthMode } from "@/components/auth/AuthPanel";
+import { useAuthModal } from "@/contexts/AuthModalContext";
 import ConfirmModal from "@/components/ui/ConfirmModal";
 
 export default function Navbar() {
@@ -16,10 +16,17 @@ export default function Navbar() {
   const router = useRouter();
   const { user, logout } = useAuth();
   const { showToast } = useToast();
-  const [authOpen, setAuthOpen] = useState(false);
-  const [authMode, setAuthMode] = useState<AuthMode>("login");
+  const { openAuth: openAuthModal } = useAuthModal();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [logoutConfirmOpen, setLogoutConfirmOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 12);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const isActive = (path: string) => pathname === path;
 
@@ -41,15 +48,23 @@ export default function Navbar() {
     { href: "/latihan", label: "Latihan" },
   ];
 
-  const openAuth = (mode: AuthMode) => {
-    setAuthMode(mode);
-    setAuthOpen(true);
+  const openAuth = (mode: "login" | "register") => {
+    openAuthModal(mode);
     setMobileMenuOpen(false);
   };
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 w-full h-14 md:h-16 backdrop-blur-xl border-b border-white/10" style={{ backgroundColor: "rgba(58, 36, 20, 0.72)" }}>
+      <nav
+        className={`fixed top-0 left-0 right-0 z-50 w-full backdrop-blur-xl border-b transition-all duration-300 ${
+          scrolled ? "h-12 md:h-14 border-white/15 shadow-lg shadow-black/10" : "h-14 md:h-16 border-white/10"
+        }`}
+        style={{
+          background: scrolled
+            ? "linear-gradient(120deg, rgba(42,24,16,0.92), rgba(74,15,13,0.88))"
+            : "linear-gradient(120deg, rgba(58,36,20,0.72), rgba(97,23,21,0.62))",
+        }}
+      >
         <div className="mx-auto max-w-6xl h-full px-5 lg:px-8 flex items-center justify-between gap-4">
           {/* Logo */}
           <Link href="/" className="flex-shrink-0 flex items-center">
@@ -71,17 +86,24 @@ export default function Navbar() {
           </Link>
 
           {/* Navigation Links — desktop/tablet only */}
-          <div className="hidden md:flex items-center gap-6 lg:gap-9">
+          <div className="hidden md:flex items-center gap-1 lg:gap-2 bg-black/10 rounded-full p-1">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`font-body text-sm tracking-wide transition-colors duration-200 ${
+                className={`relative font-body text-sm tracking-wide px-4 py-1.5 rounded-full transition-colors duration-200 ${
                   isActive(link.href)
-                    ? "text-white"
-                    : "text-white/60 hover:text-white/90"
+                    ? "text-espresso"
+                    : "text-white/70 hover:text-white"
                 }`}
               >
+                {isActive(link.href) && (
+                  <motion.span
+                    layoutId="nav-pill"
+                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                    className="absolute inset-0 bg-marigold rounded-full -z-10"
+                  />
+                )}
                 {link.label}
               </Link>
             ))}
@@ -123,7 +145,7 @@ export default function Navbar() {
                 </button>
                 <button
                   onClick={() => openAuth("register")}
-                  className="px-4 py-1.5 rounded-full bg-marigold text-espresso text-sm font-semibold hover:opacity-90 active:scale-[0.97] transition-all duration-150"
+                  className="px-4 py-1.5 rounded-lg bg-marigold text-espresso text-sm font-semibold hover:opacity-90 active:scale-[0.97] transition-all duration-150"
                 >
                   Daftar
                 </button>
@@ -195,13 +217,13 @@ export default function Navbar() {
                     <div className="flex items-center gap-3">
                       <button
                         onClick={() => openAuth("login")}
-                        className="flex-1 py-2.5 rounded-full border border-white/20 text-white text-sm font-medium"
+                        className="flex-1 py-2.5 rounded-lg border border-white/20 text-white text-sm font-medium"
                       >
                         Masuk
                       </button>
                       <button
                         onClick={() => openAuth("register")}
-                        className="flex-1 py-2.5 rounded-full bg-marigold text-espresso text-sm font-semibold"
+                        className="flex-1 py-2.5 rounded-lg bg-marigold text-espresso text-sm font-semibold"
                       >
                         Daftar
                       </button>
@@ -213,13 +235,6 @@ export default function Navbar() {
           )}
         </AnimatePresence>
       </nav>
-
-      <AuthPanel
-        isOpen={authOpen}
-        mode={authMode}
-        onModeChange={setAuthMode}
-        onClose={() => setAuthOpen(false)}
-      />
 
       <ConfirmModal
         isOpen={logoutConfirmOpen}

@@ -3,6 +3,7 @@ import { Fredoka, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ToastProvider } from "@/contexts/ToastContext";
+import { AuthModalProvider } from "@/contexts/AuthModalContext";
 import OfflineOverlay from "@/components/ui/OfflineOverlay";
 
 const fredoka = Fredoka({
@@ -34,8 +35,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="min-h-full flex flex-col bg-cream text-text-primary">
         <AuthProvider>
           <ToastProvider>
-            {children}
-            <OfflineOverlay />
+            <AuthModalProvider>
+              {children}
+              <OfflineOverlay />
+            </AuthModalProvider>
           </ToastProvider>
         </AuthProvider>
       </body>
