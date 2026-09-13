@@ -80,5 +80,22 @@ export function useViewedHuruf() {
     [user]
   );
 
-  return { viewed, markViewed, loaded };
+  const resetProgress = useCallback(async (): Promise<{ error?: string }> => {
+    if (user) {
+      const { error } = await supabase.from("huruf_progress").delete().eq("user_id", user.id);
+      if (error) {
+        return { error: error.message };
+      }
+    } else {
+      try {
+        window.localStorage.removeItem(STORAGE_KEY);
+      } catch {
+        // ignore
+      }
+    }
+    setViewed(new Set());
+    return {};
+  }, [user]);
+
+  return { viewed, markViewed, resetProgress, loaded };
 }

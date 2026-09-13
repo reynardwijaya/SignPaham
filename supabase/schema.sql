@@ -107,3 +107,7 @@ create policy "Huruf progress is insertable by owner"
 create policy "Huruf progress is updatable by owner"
   on public.huruf_progress for update
   using (auth.uid() = user_id);
+
+create policy "Huruf progress is deletable by owner"
+  on public.huruf_progress for delete
+  using (auth.uid() = user_id);

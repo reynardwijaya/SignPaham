@@ -1,17 +1,36 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import { RotateCcw } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import AlfabetGrid from "@/components/alfabet/AlfabetGrid";
 import HurufModal from "@/components/alfabet/HurufModal";
+import CelebrationModal from "@/components/alfabet/CelebrationModal";
+import ConfirmModal from "@/components/ui/ConfirmModal";
 import { alfabetData } from "@/data/alfabet";
 import { useViewedHuruf } from "@/hooks/useViewedHuruf";
+import { useToast } from "@/contexts/ToastContext";
 
 export default function AlfabetPage() {
   const [selectedHuruf, setSelectedHuruf] = useState<string | null>(null);
-  const { viewed, markViewed } = useViewedHuruf();
+  const { viewed, markViewed, resetProgress, loaded } = useViewedHuruf();
+  const { showToast } = useToast();
+  const [celebrationOpen, setCelebrationOpen] = useState(false);
+  const [resetConfirmOpen, setResetConfirmOpen] = useState(false);
+  const hasInitialized = useRef(false);
+  const prevSize = useRef(0);
+
+  const handleResetProgress = async () => {
+    const result = await resetProgress();
+    setResetConfirmOpen(false);
+    if (result.error) {
+      showToast("Gagal mereset progres. Coba lagi.", "error");
+      return;
+    }
+    showToast("Progres belajar berhasil direset.", "success");
+  };
 
   const handleSelect = (huruf: string) => {
     setSelectedHuruf(huruf);
@@ -19,6 +38,21 @@ export default function AlfabetPage() {
   };
 
   const progressPct = Math.round((viewed.size / alfabetData.length) * 100);
+
+  // Only celebrate on a genuine transition to 100% reached while on this
+  // page — not when the saved progress already happens to be complete on load.
+  useEffect(() => {
+    if (!loaded) return;
+    if (!hasInitialized.current) {
+      hasInitialized.current = true;
+      prevSize.current = viewed.size;
+      return;
+    }
+    if (prevSize.current < alfabetData.length && viewed.size === alfabetData.length) {
+      setCelebrationOpen(true);
+    }
+    prevSize.current = viewed.size;
+  }, [viewed.size, loaded]);
 
   return (
     <div className="flex flex-col min-h-screen bg-cream">
@@ -66,6 +100,16 @@ export default function AlfabetPage() {
                 />
               </div>
             </div>
+
+            {viewed.size > 0 && (
+              <button
+                onClick={() => setResetConfirmOpen(true)}
+                aria-label="Reset progres"
+                className="flex-shrink-0 w-9 h-9 flex items-center justify-center rounded-full border border-espresso/15 text-espresso/60 hover:text-error hover:border-error/30 hover:bg-error/5 transition-colors duration-200"
+              >
+                <RotateCcw size={15} />
+              </button>
+            )}
           </motion.div>
 
           <AlfabetGrid onHurufSelect={handleSelect} viewed={viewed} />
@@ -76,6 +120,22 @@ export default function AlfabetPage() {
         huruf={selectedHuruf}
         onClose={() => setSelectedHuruf(null)}
         onNavigate={handleSelect}
+      />
+
+      <CelebrationModal
+        isOpen={celebrationOpen}
+        onClose={() => setCelebrationOpen(false)}
+      />
+
+      <ConfirmModal
+        isOpen={resetConfirmOpen}
+        title="Reset progres belajar?"
+        description="Semua tanda huruf yang sudah dipelajari akan dihapus dan tidak bisa dikembalikan."
+        confirmLabel="Ya, Reset"
+        cancelLabel="Batal"
+        variant="danger"
+        onConfirm={handleResetProgress}
+        onCancel={() => setResetConfirmOpen(false)}
       />
 
       <Footer />
