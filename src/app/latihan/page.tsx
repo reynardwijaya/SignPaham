@@ -23,7 +23,7 @@ export default function LatihanPage() {
   const [kesulitan, setKesulitan] = useState<Kesulitan | null>(null);
   const [kecepatan, setKecepatan] = useState<"lambat" | "cepat">("lambat");
   const [historyOpen, setHistoryOpen] = useState(false);
-  const { history, addEntry, clearHistory } = useQuizHistory();
+  const { history, addEntry } = useQuizHistory();
 
   const handleStart = () => {
     if (kesulitan) {
@@ -54,16 +54,22 @@ export default function LatihanPage() {
 
       <main className="flex-1 pt-20 pb-5 sm:pt-24 sm:pb-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto relative">
-          {/* Mascot welcoming the learner */}
-          <motion.img
-            src="/mascot.png"
-            alt=""
-            aria-hidden="true"
+          {/* Mascot welcoming the learner — fades in, then bobs gently forever */}
+          <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.15 }}
-            className="hidden lg:block absolute -right-60 xl:-right-72 top-24 h-80 xl:h-96 w-auto object-contain pointer-events-none select-none"
-          />
+            className="hidden lg:block absolute -right-60 xl:-right-72 top-24 pointer-events-none select-none"
+          >
+            <motion.img
+              src="/mascot.png"
+              alt=""
+              aria-hidden="true"
+              animate={{ y: [0, -14, 0] }}
+              transition={{ duration: 2.6, repeat: Infinity, ease: "easeInOut" }}
+              className="h-80 xl:h-96 w-auto object-contain"
+            />
+          </motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -196,7 +202,6 @@ export default function LatihanPage() {
         isOpen={historyOpen}
         history={history}
         onClose={() => setHistoryOpen(false)}
-        onClear={clearHistory}
       />
 
       <Footer />
