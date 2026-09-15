@@ -1,14 +1,13 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Check, Snail, Rabbit, History, Trash2, ArrowLeft } from "lucide-react";
+import { X, Check, Snail, Rabbit, History, ArrowLeft } from "lucide-react";
 import { HistoryEntry } from "@/hooks/useQuizHistory";
 
 interface HistoryModalProps {
   isOpen: boolean;
   history: HistoryEntry[];
   onClose: () => void;
-  onClear: () => void;
 }
 
 const kesulitanStyle: Record<string, { bg: string; text: string; label: string }> = {
@@ -34,7 +33,7 @@ function relativeTime(timestamp: number) {
   });
 }
 
-export default function HistoryModal({ isOpen, history, onClose, onClear }: HistoryModalProps) {
+export default function HistoryModal({ isOpen, history, onClose }: HistoryModalProps) {
   const correctCount = history.filter((h) => h.correct).length;
   const scorePct =
     history.length > 0 ? Math.round((correctCount / history.length) * 100) : 0;
@@ -178,19 +177,6 @@ export default function HistoryModal({ isOpen, history, onClose, onClear }: Hist
                   </>
                 )}
               </motion.button>
-
-              {history.length > 0 && (
-                <motion.button
-                  type="button"
-                  whileHover={{ y: -1 }}
-                  whileTap={{ scale: 0.97 }}
-                  onClick={onClear}
-                  aria-label="Hapus riwayat"
-                  className="w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-full border border-error/20 text-error hover:bg-error/5 transition-colors duration-200"
-                >
-                  <Trash2 size={15} />
-                </motion.button>
-              )}
             </div>
           </motion.div>
         </motion.div>

@@ -128,19 +128,5 @@ export function useQuizHistory() {
     [user]
   );
 
-  const clearHistory = useCallback(async () => {
-    if (user) {
-      await supabase.from("quiz_history").delete().eq("user_id", user.id);
-      setHistory([]);
-      return;
-    }
-    setHistory([]);
-    try {
-      window.localStorage.removeItem(STORAGE_KEY);
-    } catch {
-      // ignore
-    }
-  }, [user]);
-
-  return { history, addEntry, clearHistory, loaded };
+  return { history, addEntry, loaded };
 }
