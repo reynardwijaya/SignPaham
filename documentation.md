@@ -18,6 +18,8 @@ Platform edukasi interaktif untuk belajar **Bahasa Isyarat Indonesia (BISINDO)**
 | Hosting target | Vercel (atau platform Node.js lain) |
 
 > **Catatan penting soal Tailwind v4:** versi ini tidak lagi membaca `tailwind.config.ts` secara otomatis. Semua warna, font, dan radius kustom didefinisikan lewat blok `@theme { ... }` di `src/app/globals.css`. Kalau mau menambah warna/token baru, edit file itu — bukan bikin `tailwind.config.ts`.
+>
+> **Catatan penting soal client Supabase:** `src/lib/supabase.ts` dan `supabaseAdmin.ts` **jangan** dibuat langsung dengan `createClient()` di top-level module. Next.js me-*render* komponen `"use client"` sekali di server saat build (prerendering) — kalau client Supabase dibuat langsung saat import, build akan **crash total di Vercel** ketika env var belum ter-set (pernah kejadian). Solusinya: kedua file memakai `Proxy` supaya client baru dibuat saat pertama kali benar-benar dipakai (di browser), dengan method di-*bind* ke instance asli supaya `this` internal Supabase tidak rusak.
 
 ---
 
@@ -64,9 +66,10 @@ SignPaham/
 │   │   └── kosakata.ts            # Daftar kata untuk latihan, dikelompokkan per tingkat kesulitan
 │   │
 │   └── lib/                      # Utilitas & klien pihak ketiga
-│       ├── supabase.ts            # Klien Supabase sisi browser (pakai anon key, aman di client)
-│       └── supabaseAdmin.ts       # Klien Supabase sisi server (pakai service_role key — JANGAN pernah
-│                                   #   di-import dari komponen "use client")
+│       ├── supabase.ts            # Klien Supabase sisi browser (anon key). Dibuat LAZY lewat Proxy —
+│       │                          #   baru benar-benar terbentuk saat dipakai, bukan saat file di-import
+│       └── supabaseAdmin.ts       # Klien Supabase sisi server (service_role key — JANGAN pernah
+│                                   #   di-import dari komponen "use client"). Lazy juga, pola sama
 │
 ├── public/
 │   └── isyarat/                   # Foto asli 26 huruf BISINDO (a.jpg–z.jpg, rasio 3:4), dipakai di
@@ -196,6 +199,6 @@ npm run lint    # cek linting
 
 - **Auth** — Panel slide-in dari kanan (`AuthPanel`), bukan halaman terpisah. Mode: Masuk, Daftar, Lupa Kata Sandi (reset langsung tanpa email — lihat catatan keamanan di `route.ts`). Panel ini dikontrol lewat `AuthModalContext`, jadi tombol "Daftar"/"Masuk" di halaman manapun (Navbar, CTA tamu di Latihan, dll) bisa memicunya tanpa prop-drilling.
 - **Alfabet** — Klik huruf di grid (foto asli, bukan placeholder) → modal detail muncul dengan foto, deskripsi, navigasi prev/next + keyboard arrow, dan tombol "Coba di Latihan". Progress otomatis tersimpan (Supabase/localStorage); saat 26/26 huruf selesai, `CelebrationModal` (confetti) muncul sekali. Progress bisa direset lewat tombol di sebelah progress bar (dengan `ConfirmModal`).
-- **Latihan** — Pilih tingkat kesulitan & kecepatan → mesin kuis (`useQuizEngine`) menampilkan huruf demi huruf → user tebak kata → hasil masuk ke Riwayat (`HistoryModal`, cuma muncul kalau sudah login). User tamu (belum login) melihat banner ajakan daftar di atas form setup.
+- **Latihan** — Pilih tingkat kesulitan & kecepatan → mesin kuis (`useQuizEngine`) menampilkan huruf demi huruf → user tebak kata → hasil masuk ke Riwayat (`HistoryModal`, cuma muncul kalau sudah login). Riwayat bersifat **permanen dan tidak bisa dihapus** (beda dengan progress huruf yang boleh direset) — ini keputusan produk yang disengaja. User tamu (belum login) melihat banner ajakan daftar di atas form setup, plus maskot yang mengambang (animasi loop) di sisi kanan.
 - **Notifikasi** — Toast (`useToast`) untuk feedback aksi (berhasil daftar/masuk/keluar/reset progres), `ConfirmModal` untuk aksi yang perlu konfirmasi (keluar akun, reset progres).
 - **Error handling** — `ErrorState` (komponen reusable) dipakai di halaman 404, error boundary, dan "segera hadir"; `OfflineOverlay` otomatis muncul saat koneksi internet putus.
