@@ -1,12 +1,12 @@
-# SignPaham
+# 🤟 SignPaham
 
 Platform edukasi interaktif untuk belajar **Bahasa Isyarat Indonesia (BISINDO)** — karena 2.500.000+ tunarungu di Indonesia juga ingin didengar.
 
-- **Alfabet BISINDO** — 26 huruf interaktif lengkap dengan cara membentuk isyaratnya, progres belajar tersimpan otomatis
-- **Latihan Tebak Kata** — pilih tingkat kesulitan & kecepatan tampilan, jawab lewat rangkaian isyarat
-- **Riwayat & Skor** — lacak setiap jawaban, akurasi, dan perkembangan dari waktu ke waktu
-- **Akun Pengguna** — daftar/masuk lewat panel slide-in yang cepat, tanpa pindah halaman
-- **Bekerja tanpa akun** — progres tetap tersimpan lokal untuk pengguna yang belum login
+- 🔤 **Alfabet BISINDO** — 26 huruf interaktif lengkap dengan cara membentuk isyaratnya, progres belajar tersimpan otomatis
+- 🎯 **Latihan Tebak Kata** — pilih tingkat kesulitan & kecepatan tampilan, jawab lewat rangkaian isyarat
+- 📊 **Riwayat & Skor** — lacak setiap jawaban, akurasi, dan perkembangan dari waktu ke waktu
+- 👤 **Akun Pengguna** — daftar/masuk lewat panel slide-in yang cepat, tanpa pindah halaman
+- 💾 **Bekerja tanpa akun** — progres tetap tersimpan lokal untuk pengguna yang belum login
 
 ## Tech Stack
 
